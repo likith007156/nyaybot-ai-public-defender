@@ -2,6 +2,7 @@ services:
   - type: web
     name: nyaybot-backend
     env: node
+    plan: free
     rootDir: backend
     buildCommand: npm install
     startCommand: npm start
