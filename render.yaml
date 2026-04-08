@@ -15,7 +15,6 @@ services:
     name: nyaybot-frontend
     env: static
     plan: free
-    region: oregon
     rootDir: frontend
     buildCommand: ""
     staticPublishPath: .
