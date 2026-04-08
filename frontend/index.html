@@ -1357,7 +1357,7 @@
                 const data = await res.json();
 
                 if (!res.ok) {
-                    throw new Error(data.error || 'Failed to get response');
+                    throw new Error((data.error || 'Failed to get response') + (data.details ? ` - Details: ${data.details}` : ''));
                 }
 
                 hideTyping();

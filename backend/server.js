@@ -82,7 +82,7 @@ Cases Dataset: ${JSON.stringify(casesDataset)}
         if (error.status === 429 || (error.message && error.message.includes('429'))) {
             return res.status(429).json({ error: "The AI is currently receiving too many requests. Please wait a minute and try again." });
         }
-        res.status(500).json({ error: "Failed to generate a response. Please check your API Key and server logs!" });
+        res.status(500).json({ error: "Failed to generate a response. Please check your API Key and server logs!", details: error.message || error.toString() });
     }
 });
 
