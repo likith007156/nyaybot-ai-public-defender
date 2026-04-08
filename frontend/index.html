@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <title>NyayBot — AI Public Defender</title>
+    <meta name="description"
+        content="NyayBot: Free AI legal assistant for Indian law in 11 languages with voice support.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=DM+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0a0e1a;
+            --bg-elevated: #111827;
+            --gold: #d4a92a;
+            --gold-dim: rgba(212, 169, 42, 0.1);
+            --gold-glow: rgba(212, 169, 42, 0.3);
+            --text: #e5e7eb;
+            --text-dim: #9ca3af;
+            --white: #ffffff;
+            --heading: 'Antonio', 'DM Serif Display', sans-serif;
+            --body: 'DM Sans', system-ui, sans-serif;
+            --r: 6px;
+            --trans: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--body);
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body.chat-active {
+            overflow: hidden;
+        }
+
+        /* ══ CINEMATIC INTRO ══ */
+        .pre-intro-stage {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 2000;
+            /* Ensure it stays above EVERYTHING for the first 3 seconds */
+            display: flex;
+            flex-direction: column;
+            /* Stack the titles */
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            /* Tightened spacing */
+            animation: hidePreIntro 0.1s linear 3s forwards;
+        }
+
+        .minimalist-title {
+            color: #fff;
+            font-family: var(--heading);
+            font-size: 2.4rem;
+            /* Bold and Bigger */
+            letter-spacing: 0.6em;
+            font-weight: 800;
+            opacity: 0;
+            text-align: center;
+            animation: fadeInOut 3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        h3.minimalist-title {
+            font-size: 1.2rem;
+            letter-spacing: 0.8em;
+            font-weight: 700;
+            opacity: 0;
+            color: var(--gold);
+            /* Gold accent for the point of clarity */
+            margin-top: -5px;
+            /* Pulled UP closer to the H2 */
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes hidePreIntro {
+            to {
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
+
+        .flash-bang {
+            position: fixed;
+            inset: 0;
+            z-index: 45;
+            opacity: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at center, #ffffff 0%, #cce5ff 40%, rgba(255, 255, 255, 0) 80%);
+            animation: flashExplode 4s cubic-bezier(0, 0, 0.2, 1) 2.8s both;
+        }
+
+        @keyframes flashExplode {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+                filter: brightness(2);
+            }
+
+            10% {
+                opacity: 1;
+                transform: scale(3);
+                filter: brightness(4);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(4);
+                filter: brightness(1);
+            }
+        }
+
+        .intro-stage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .camera-rig {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: cameraZoomOut 7s cubic-bezier(0.1, 0.9, 0.2, 1) 3s both;
+            transform-origin: center 40%;
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes cameraZoomOut {
+            0% {
+                transform: scale(3) translateY(10vh);
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .sky-gradient {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at bottom, rgba(212, 169, 42, 0.15) 0%, transparent 60%), linear-gradient(to bottom, transparent 0%, rgba(20, 40, 80, 0.4) 100%);
+            z-index: 0;
+        }
+
+        .lens-flare {
+            position: absolute;
+            width: 150vw;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, rgba(100, 200, 255, 0.8) 50%, transparent 100%);
+            box-shadow: 0 0 20px rgba(100, 200, 255, 0.6), 0 0 40px rgba(200, 100, 255, 0.4);
+            transform: rotate(-15deg);
+            z-index: 3;
+            opacity: 0;
+            animation: flareSweep 5s cubic-bezier(0.2, 0.8, 0.2, 1) 2.5s both;
+            pointer-events: none;
+        }
+
+        @keyframes flareSweep {
+            0% {
+                opacity: 0;
+                top: 10%;
+                transform: rotate(-15deg) scale(0.5);
+            }
+
+            30% {
+                opacity: 1;
+                transform: rotate(-15deg) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                top: 90%;
+                transform: rotate(-15deg) scale(1.5);
+            }
+        }
+
+        .columbia-glow {
+            content: '';
+            position: absolute;
+            width: 80vh;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(212, 169, 42, 0.3) 0%, rgba(212, 169, 42, 0) 65%);
+            z-index: -1;
+            animation: pulseGlow 4s alternate infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        .logo-3d-canvas {
+            position: absolute;
+            height: clamp(350px, 75vh, 1200px);
+            width: auto;
+            aspect-ratio: 1;
+            z-index: 5;
+            pointer-events: none;
+            animation: moveLogo 5s cubic-bezier(0.1, 0.9, 0.2, 1) 3s both;
+            filter: drop-shadow(0 0 50px rgba(212, 169, 42, 0.15));
+        }
+
+        @keyframes moveLogo {
+            from {
+                opacity: 0;
+                transform: translateY(10vh) scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .cinematic-title {
+            position: absolute;
+            z-index: 2;
+            /* Sit behind the 3D logo but in front of background */
+            font-family: var(--heading);
+            font-size: clamp(6rem, 18vw, 20rem);
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            text-shadow: -1px -1px 0 #fff, 1px 1px 0 #9ca3af, 0 10px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 255, 255, 0.1);
+            top: 8%;
+            /* PLACED EVEN MORE UP */
+            transform: scaleY(1.2);
+            opacity: 0;
+            animation: titleReveal 6s cubic-bezier(0.2, 0.8, 0.2, 1) 3.5s both;
+            pointer-events: none;
+        }
+
+        @keyframes titleReveal {
+            0% {
+                opacity: 0;
+                filter: blur(20px);
+                letter-spacing: 0.05em;
+                transform: scaleY(1.2);
+            }
+
+            100% {
+                opacity: 1;
+                filter: blur(0);
+                letter-spacing: 0.15em;
+                transform: scaleY(1.2);
+            }
+        }
+
+        .massive-logo {
+            height: clamp(250px, 50vh, 800px);
+            margin-bottom: 40px;
+            animation: majesticEmerge 5s cubic-bezier(0.1, 0.9, 0.2, 1) 3s both;
+            opacity: 0;
+            transform: translateY(20vh) scale(0.5);
+            filter: invert(1) hue-rotate(180deg) contrast(2.5) brightness(0.85);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes majesticEmerge {
+            0% {
+                opacity: 0;
+                transform: translateY(20vh) scale(0.5);
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .scroll-prompt {
+            position: absolute;
+            bottom: 40px;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeIn 2s 7s both;
+            z-index: 5;
+        }
+
+        .lang-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            max-width: 900px;
+            width: 90%;
+            padding: 30px;
+            background: rgba(10, 14, 26, 0.4);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            animation: containerFloat 1.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
+        @keyframes containerFloat {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        .lang-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 20px 15px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid transparent;
+        }
+
+        .lang-card:hover {
+            background: rgba(212, 169, 42, 0.08);
+            border-color: var(--gold);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 169, 42, 0.1);
+        }
+
+        .lang-card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .lang-card:hover .lang-native {
+            color: var(--gold);
+            transform: scale(1.1);
+        }
+
+        .lang-native {
+            font-size: 1.6rem;
+            font-family: var(--heading);
+            color: var(--white);
+            font-weight: 600;
+            transition: 0.4s;
+            line-height: 1.2;
+        }
+
+        .lang-eng {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--text-dim);
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .lang-card:hover .lang-eng {
+            color: #fff;
+            letter-spacing: 3.5px;
+        }
+
+        .lang-title {
+            position: absolute;
+            top: -60px;
+            width: 100%;
+            text-align: center;
+            font-family: var(--heading);
+            letter-spacing: 10px;
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .lang-stage {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            background: radial-gradient(circle at center, rgba(10, 14, 26, 0.5) 0%, var(--bg) 100%);
+        }
+
+        body.scrolled .camera-rig {
+            opacity: 0.1;
+            transform: scale(0.8);
+            transition: 1s;
+        }
+
+        body.scrolled .lang-stage {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+
+        body.chat-active .lang-stage {
+            display: none;
+        }
+
+        /* ══ AUTH STAGE ══ */
+        .auth-stage {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            background: rgba(10, 14, 26, 0.4);
+            backdrop-filter: blur(40px);
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+
+        .auth-stage.active {
+            display: flex;
+        }
+
+        .auth-card {
+            width: 400px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 169, 42, 0.06) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+            pointer-events: none;
+            /* Fix: Allow clicking through high-z background */
+            z-index: -1;
+        }
+
+        .auth-card h2 {
+            font-family: var(--heading);
+            letter-spacing: 5px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .auth-card p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .field label {
+            display: block;
+            font-size: 0.6rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+
+        .field input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: var(--white);
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .field input:focus {
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(212, 169, 42, 0.1);
+        }
+
+        .auth-btn {
+            width: 100%;
+            background: var(--gold);
+            color: var(--bg);
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--gold-glow);
+        }
+
+        .auth-footer {
+            margin-top: 25px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .auth-footer span {
+            color: var(--gold);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .close-auth {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-auth:hover {
+            color: var(--gold);
+        }
+
+        .vault-btn {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: rgba(212, 169, 42, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            letter-spacing: 2.5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: 0.3s;
+            z-index: 21;
+            /* Above lang stage but below modal */
+            backdrop-filter: blur(10px);
+        }
+
+        .guest-link {
+            display: block;
+            margin-top: 15px;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            cursor: pointer;
+            text-decoration: underline;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+
+        .guest-link:hover {
+            color: var(--gold);
+            opacity: 1;
+        }
+
+        body:not(.scrolled) .vault-btn {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+
+        /* ══ CHAT INTERFACE ══ */
+        #chat-view {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.45);
+            /* Darkened slightly to improve readability */
+            flex-direction: row;
+            z-index: 50;
+            animation: fadeIn 0.4s ease both;
+        }
+
+        #chat-view.show {
+            display: flex;
+        }
+
+        .chat-sidebar {
+            width: 250px;
+            background: rgba(6, 9, 18, 0.85);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            z-index: 2;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 20px 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sign-out-btn {
+            width: 100%;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sign-out-btn:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .topic-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--r);
+            border-left: 4px solid transparent;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: var(--trans);
+            font-size: 0.95rem;
+        }
+
+        .topic-item:hover {
+            background: var(--gold-dim);
+            color: var(--white);
+        }
+
+        .topic-item.active {
+            background: rgba(212, 169, 42, 0.25);
+            color: var(--white);
+            border-left: 4px solid var(--gold);
+            font-weight: 700;
+        }
+
+        .mode-switch {
+            display: flex;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: var(--r);
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 6px 0;
+            background: transparent;
+            color: var(--text-dim);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            transition: var(--trans);
+        }
+
+        .mode-btn.active {
+            background: var(--gold);
+            color: var(--bg);
+        }
+
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .chat-header {
+            height: 100px;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .back-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-dim);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--trans);
+        }
+
+        .back-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .msg-row {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+        }
+
+        .msg-row.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .msg-row.ai {
+            align-self: flex-start;
+        }
+
+        .bubble {
+            padding: 20px 24px;
+            border-radius: var(--r);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .user .bubble {
+            background: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ai .bubble {
+            border: 1px solid var(--gold-dim);
+            background: rgba(212, 169, 42, 0.05);
+            backdrop-filter: blur(5px);
+        }
+
+        .citations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .cite {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border: 1px solid var(--gold-dim);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .chat-footer {
+            padding: 20px 32px 40px 32px;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+        }
+
+        .input-wrap {
+            position: relative;
+            background: var(--bg-elevated);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--r);
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            gap: 12px;
+        }
+
+        #user-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-family: var(--body);
+            font-size: 0.9rem;
+            padding: 10px 0;
+            resize: none;
+            max-height: 120px;
+        }
+
+        .send-btn {
+            background: var(--gold);
+            border: none;
+            color: var(--bg);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--trans);
+        }
+
+        .send-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .mic-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gold);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--trans);
+        }
+
+        .mic-btn:hover {
+            background: rgba(212, 169, 42, 0.1);
+            border-color: var(--gold);
+        }
+
+        .mic-btn.recording {
+            background: #ef4444;
+            color: #fff;
+            border-color: #ef4444;
+            animation: pulse-mic 1.5s infinite;
+        }
+
+        @keyframes pulse-mic {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .stop-circle {
+            width: 80px;
+            height: 80px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+            transition: 0.3s;
+        }
+
+        .stop-circle:hover {
+            transform: scale(1.1);
+        }
+
+        .stop-square {
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        .disclaimer {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.25);
+            text-align: center;
+            margin-top: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ══ RECORDING OVERLAY ══ */
+
+        .recording-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 14, 26, 0.9);
+            z-index: 90;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-family: var(--heading);
+            font-size: 2rem;
+            transition: opacity 0.3s;
+        }
+
+        .recording-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #landing {
+                padding: 100px 20px 40px;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .logo-wrap {
+                top: 20px;
+                left: 20px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-header {
+                padding: 0 20px;
+            }
+
+            .chat-area {
+                padding: 30px 20px;
+            }
+
+            .voice-fab {
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══ CINEMATIC INTRO ══ -->
+    <div class="pre-intro-stage" id="pre-intro-stage">
+        <h2 class="minimalist-title">NYAYABOT AI SYSTEM</h2>
+        <h3 class="minimalist-title">YOUR DIRECT POINT OF CLARITY</h3>
+    </div>
+
+    <div class="flash-bang" id="flash-bang"></div>
+
+    <div id="stars"></div>
+
+    <div class="intro-stage" id="intro-stage">
+        <div class="camera-rig">
+            <div class="sky-gradient"></div>
+            <div class="lens-flare"></div>
+            <div class="columbia-glow"></div>
+            <h1 class="cinematic-title">NYAYABOT</h1>
+            <canvas id="logo-sequencer" class="logo-3d-canvas"></canvas>
+        </div>
+
+        <div class="scroll-prompt">Scroll to begin</div>
+    </div>
+
+    <!-- ══ LANGUAGE SELECTION ══ -->
+    <button class="vault-btn" id="vault-access-btn" onclick="toggleAuth(true)">Legal Vault Access</button>
+    <div class="lang-stage" id="lang-stage">
+        <div style="position:relative;">
+            <div class="lang-title">SELECT PREFERRED LANGUAGE</div>
+            <div class="lang-grid" id="lang-grid"></div>
+        </div>
+    </div>
+
+    <!-- ══ AUTH STAGE ══ -->
+    <div class="auth-stage" id="auth-stage">
+        <div class="auth-card">
+            <div class="close-auth" onclick="toggleAuth(false)">🗙</div>
+            <h2 id="auth-title">Legal Vault</h2>
+            <p id="auth-desc">Access your saved cases and documents</p>
+
+            <form id="auth-form" onsubmit="handleAuth(event)">
+                <div class="field">
+                    <label>Identifier</label>
+                    <input type="text" id="auth-user" placeholder="Username or Case ID" required>
+                </div>
+
+                <div class="field">
+                    <label>Secure Key</label>
+                    <input type="password" id="auth-pass" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="auth-btn" id="auth-submit-btn">Authorize Access</button>
+            </form>
+
+            <span class="guest-link" onclick="toggleAuth(false)">Continue as Guest Mode</span>
+
+            <div class="auth-footer" style="margin-top:20px;">
+                <span id="auth-toggle-text">New defender?</span>
+                <span id="auth-toggle-link" onclick="switchAuthMode()">Register Account</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ CHAT VIEW ══ -->
+    <main id="chat-view">
+        <aside class="chat-sidebar" id="chat-sidebar">
+            <div class="mode-switch">
+                <button class="mode-btn active" id="mode-auto">Auto-Detect</button>
+                <button class="mode-btn" id="mode-manual">Manual</button>
+            </div>
+            <div id="topics-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+
+            <div class="sidebar-footer">
+                <button class="sign-out-btn" onclick="signOut()">Sign Out</button>
+            </div>
+        </aside>
+
+        <div class="chat-main">
+            <header class="chat-header">
+                <button class="back-btn" onclick="exitChat()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                </button>
+                <div id="active-topic-name"
+                    style="font-family:var(--heading); color:var(--white); font-size:1.5rem; letter-spacing:1.5px;">
+                    NyayaBot</div>
+                <div class="lang-pill" id="lang-switch"
+                    style="cursor:pointer; background:rgba(212,169,42,0.1); border:1px solid var(--gold); padding:4px 12px; border-radius:20px; font-size:0.7rem; color:var(--gold)">
+                    EN</div>
+            </header>
+
+            <div class="chat-area" id="chat-area"></div>
+
+            <footer class="chat-footer">
+                <div class="input-wrap">
+                    <textarea id="user-input" rows="1" placeholder="Describe your situation..."></textarea>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="mic-btn" id="voice-btn" title="Voice Search">
+                            <svg style="pointer-events: none" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" />
+                            </svg>
+                        </button>
+                        <button class="send-btn" id="send-btn">
+                            <svg style="pointer-events: none" width="18" height="18" viewBox="0 0 24 24"
+                                fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="disclaimer">⚠️"This bot provides legal information for awareness. For binding legal advice,
+                    please consult a registered lawyer."</div>
+            </footer>
+        </div>
+    </main>
+
+    <!-- ══ VOICE UI OVERLAY ══ -->
+    <div class="recording-overlay" id="recording-overlay">
+        <div class="stop-circle" onclick="stopVoice()">
+            <div class="stop-square"></div>
+        </div>
+        <div id="rec-status" style="margin-bottom:20px">LISTENING...</div>
+        <div id="transcript-preview" style="font-size:0.9rem; font-family:var(--body); opacity:0.6"></div>
+    </div>
+
+    <script>
+        const SARVAM_KEY = 'sk_72e9ork6_PI5rvYOpIrc447YHth4iZGVw';
+        const BACKEND_URL = 'http://localhost:3001/api/chat';
+
+        const LANGS = {
+            'en-IN': { native: 'English', name: 'English', greet: 'Hello!', welcome: 'I am Nyayabot, your AI legal assistant. How can I help you today?', placeholder: 'Describe your legal situation…', hero: 'NyayBot: AI Public Defender', sub: 'Simplifying Indian Law. Amplifying Your Voice.' },
+            'hi-IN': { native: 'हिन्दी', name: 'Hindi', greet: 'नमस्ते!', welcome: 'मैं न्यायबॉट हूँ, आपका AI कानूनी सहायक। मैं आपकी क्या मदद कर सकता हूँ?', placeholder: 'अपनी स्थिति बताएं…', hero: 'न्यायबॉट: AI पब्लिक डिफेंडर', sub: 'भारतीय कानून को सरल बनाना। आपकी आवाज़ बुलंद करना।' },
+            'bn-IN': { native: 'বাংলা', name: 'Bengali', greet: 'নমস্কার!', welcome: 'আমি ন্যায়বট, আপনার AI আইনি সহকারী। আমি আপনাকে কীভাবে সাহায্য করতে পারি?', placeholder: 'আপনার পরিস্থিতি বর্ণনা করুন…', hero: 'ন্যায়বট: AI পাবলিক ডিফেন্ডার', sub: 'ভারতীয় আইনকে সরল করা। আপনার কণ্ঠস্বরকে শক্তিশালী করা।' },
+            'ta-IN': { native: 'தமிழ்', name: 'Tamil', greet: 'வணக்கம்!', welcome: 'நான் நியாய்பாட், உங்கள் AI சட்ட உதவியாளர். இன்று உங்களுக்கு நான் எப்படி உதவ முடியும்?', placeholder: 'உங்கள் நிலைமையை விவரிக்கவும்…', hero: 'நியாய்பாட்: AI பொது பாதுகாவலர்', sub: 'இந்தியச் சட்டத்தை எளிதாக்குதல். உங்கள் குரலை ஓங்கச் செய்தல்.' },
+            'te-IN': { native: 'తెలుగు', name: 'Telugu', greet: 'నమస్కారం!', welcome: 'నేను న్యాయ్‌బాట్, మీ AI న్యాయ సహాయకుడిని. ఈ రోజు నేను మీకు ఎలా సహాయం చేయగలను?', placeholder: 'మీ పరిస్థితిని వివరించండి…', hero: 'న్యాయ్‌బాట్: AI పబ్లిక్ డిఫెండర్', sub: 'భారతీయ చట్టాన్ని సులభతరం చేయడం. మీ వాయిస్‌ని విస్తరించడం.' },
+            'kn-IN': { native: 'ಕನ್ನಡ', name: 'Kannada', greet: 'ನಮಸ್ಕಾರ!', welcome: 'ನಾನು ನ್ಯಾಯ್ ಮತ್ತು ಇಂದು ನಿಮ್ಮ ಸಮಸ್ಯೆಗಳನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳಲು ಇಲ್ಲಿದ್ದೇನೆ.', placeholder: 'ನಿಮ್ಮ ಪರಿಸ್ಥಿತಿಯನ್ನು ವಿವರಿಸಿ…', hero: 'ನ್ಯಾಯಬೋಟ್: AI ಪಬ್ಲಿಕ್ ಡಿಫೆಂಡರ್', sub: 'ಭಾರತೀಯ ಕಾನೂನನ್ನು ಸರಳಗೊಳಿಸುವುದು. ನಿಮ್ಮ ಧ್ವನಿಯನ್ನು ಹೆಚ್ಚಿಸುವುದು.' },
+            'ml-IN': { native: 'മലയാളം', name: 'Malayalam', greet: 'നമസ്കാരം!', welcome: 'ഞാൻ ന്യായബോട്ട് ആണ്, നിങ്ങളുടെ AI നിയമ സഹായി. ഇന്ന് എനിക്ക് നിങ്ങളെ എങ്ങനെ സഹായിക്കാനാകും?', placeholder: 'നിങ്ങളുടെ സാഹചര്യം വിവരിക്കുക…', hero: 'ന്യായബോട്ട്: AI പബ്ലിക് ഡിഫൻഡർ', sub: 'ഇന്ത്യൻ നിയമം ലളിതമാക്കുന്നു. നിങ്ങളുടെ ശബ്ദം ഉച്ചത്തിലാക്കുന്നു.' },
+            'mr-IN': { native: 'मराठी', name: 'Marathi', greet: 'नमस्कार!', welcome: 'मी न्यायबॉट आहे, तुमचा AI कायदेशीर सहाय्यक. मी आज तुम्हाला कशी मदत करू शकतो?', placeholder: 'तुमची परिस्थिती सांगा…', hero: 'न्यायबॉट: AI पब्लिक डिफेंडर', sub: 'भारतीय कायदा सोपा करत आहे. तुमचा आवाज बुलंद करत आहे.' },
+            'gu-IN': { native: 'ગુજરાતી', name: 'Gujarati', greet: 'નમસ્તે!', welcome: 'હું ન્યાયબોટ છું, તમારો AI કાનૂની સહાયક. હું આજે તમને કેવી રીતે મદદ કરી શકું?', placeholder: 'તમારી પરિસ્થિતિ જણાવો…', hero: 'ન્યાયબોટ: AI પબ્લિક ડિફેન્ડર', sub: 'ભારતીય કાયદાને સરળ બનાવવું. તમારો અવાજ મજબૂત કરવો.' },
+            'pa-IN': { native: 'ਪੰਜਾਬੀ', name: 'Punjabi', greet: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ!', welcome: 'ਮੈਂ ਨਿਆਏਬੋਟ ਹਾਂ, ਤੁਹਾਡਾ AI ਕਾਨੂੰਨੀ ਸਹਾਇਕ। ਮੈਂ ਅੱਜ ਤੁਹਾਡੀ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ?', placeholder: 'ਆਪਣੀ ਸਥਿਤੀ ਦੱਸੋ…', hero: 'ਨਿਆਏਬੋਟ: AI ਪਬਲਿਕ ਡਿਫੈਂਡਰ', sub: 'ਭਾਰਤੀ ਕਾਨੂੰਨ ਨੂੰ ਸਰਲ ਬਣਾਉਣਾ। ਤੁਹਾਡੀ ਆਵਾਜ਼ ਨੂੰ ਬੁਲੰਦ ਕਰਨਾ।' },
+            'od-IN': { native: 'ଓଡ଼ିଆ', name: 'Odia', greet: 'ନମସ୍କାର!', welcome: 'ମୁଁ ନ୍ୟାୟବୋଟ୍, ଆପଣଙ୍କର AI ଆଇନ ସହାୟକ। ଆଜି ମୁଁ ଆପଣଙ୍କୁ କିପରି ସାହାଯ୍ୟ କରିପାରିବି?', placeholder: 'ଆପଣଙ୍କର ପରିସ୍ଥିତି ବର୍ଣ୍ଣନା କରନ୍ତୁ…', hero: 'ନ୍ୟାୟବୋଟ୍: AI ପବ୍ଲିକ୍ ଡିଫେଣ୍ଡର୍', sub: 'ଭାରତୀୟ ଆଇନକୁ ସରଳ କରିବା | ଆପଣଙ୍କ ସ୍ୱରକୁ ମଜବୁତ କରିବା |' }
+        };
+
+        const TOPICS = [
+            { id: 'criminal', icon: '⚖️', en: 'Criminal Law' },
+            { id: 'labour', icon: '🏗️', en: 'Labour Rights' },
+            { id: 'consumer', icon: '🛡️', en: 'Consumer Protection' },
+            { id: 'women', icon: '👩‍⚖️', en: 'Women Safety' },
+            { id: 'cyber', icon: '💻', en: 'Cyber Crime' },
+            { id: 'property', icon: '🏠', en: 'Property Disputes' },
+            { id: 'rti', icon: '📄', en: 'RTI' }
+        ];
+
+        let currentLang = 'en-IN';
+        let isAutoMode = true;
+        let busy = false;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let currentAudio = null;
+        let currentUser = null;
+        let isRecording = false; // Track recording state globally
+
+        const micSVG = `<svg style="pointer-events: none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8" /></svg>`;
+        const stopSVG = `<svg style="pointer-events: none" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2" /></svg>`;
+        const $ = id => document.getElementById(id);
+        const landing = null, chatView = $('chat-view'), chatArea = $('chat-area'),
+            userInput = $('user-input'), sendBtn = $('send-btn'), fab = $('voice-btn'),
+            overlay = $('recording-overlay'), preview = $('transcript-preview');
+
+        // Initialize Language Selector
+        Object.entries(LANGS).forEach(([code, l]) => {
+            const card = document.createElement('div');
+            card.className = 'lang-card';
+            card.innerHTML = `
+                <div class="lang-native">${l.native}</div>
+                <div class="lang-eng">${l.name}</div>
+            `;
+            card.onclick = () => {
+                currentLang = code;
+                enterChatDirectly();
+            };
+            $('lang-grid').appendChild(card);
+        });
+
+        // Initialize Topic Sidebar
+        function initSidebar() {
+            const list = $('topics-list');
+            list.innerHTML = '';
+            TOPICS.forEach(topic => {
+                const div = document.createElement('div');
+                div.className = 'topic-item';
+                div.id = 'topic-' + topic.id;
+                div.innerHTML = `<span class="icon">${topic.icon}</span> <span class="name">${topic.en}</span>`;
+                div.onclick = () => {
+                    if (isAutoMode) return; // Prevent manual click in auto mode
+                    document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+                    $('active-topic-name').textContent = topic.en + ' Assistant';
+                };
+                list.appendChild(div);
+            });
+            // Initial state: Auto mode, no category explicitly selected
+            $('active-topic-name').textContent = 'General Legal Assistant';
+        }
+        initSidebar();
+
+        $('mode-auto').onclick = () => {
+            isAutoMode = true;
+            $('mode-auto').classList.add('active');
+            $('mode-manual').classList.remove('active');
+            document.querySelectorAll('.topic-item').forEach(el => {
+                el.classList.remove('active');
+                el.style.opacity = '0.5';
+                el.style.cursor = 'not-allowed';
+            });
+            $('active-topic-name').textContent = 'General Legal Assistant';
+        };
+
+        $('mode-manual').onclick = () => {
+            isAutoMode = false;
+            $('mode-manual').classList.add('active');
+            $('mode-auto').classList.remove('active');
+            document.querySelectorAll('.topic-item').forEach(el => {
+                el.style.opacity = '1';
+                el.style.cursor = 'pointer';
+            });
+        };
+
+        function enterChatDirectly() {
+            const l = LANGS[currentLang] || LANGS['en-IN'];
+            chatView.classList.add('show');
+            document.body.classList.add('chat-active');
+            $('lang-switch').textContent = currentLang.split('-')[0].toUpperCase();
+
+            if (currentUser) {
+                loadChatHistory();
+                if (chatArea.innerHTML === '') {
+                    const greetingSpeech = `${l.greet} ${l.welcome}`;
+                    addAIMsg('', `<strong>${l.greet}</strong> 🙏 ${l.welcome}`, [], greetingSpeech);
+                }
+            } else {
+                chatArea.innerHTML = '';
+                const greetingSpeech = `${l.greet} ${l.welcome}`;
+                addAIMsg('', `<strong>${l.greet}</strong> 🙏 ${l.welcome}`, [], greetingSpeech);
+            }
+
+            initSidebar();
+            if (isAutoMode) $('mode-auto').onclick();
+        }
+
+        function addUserMsg(text, save = true) {
+            const row = document.createElement('div');
+            row.className = 'msg-row user';
+            row.innerHTML = `<div class="bubble">${text}</div>`;
+            chatArea.appendChild(row);
+            scroll();
+            if (save && currentUser) saveToHistory({ role: 'user', content: text });
+        }
+
+        function addAIMsg(label, html, cites, rawText, save = true) {
+            const row = document.createElement('div');
+            row.className = 'msg-row ai';
+            const labelHTML = label ? `<div style="font-size:0.6rem; color:var(--gold); margin-bottom:4px; text-transform:uppercase; font-weight:700">${label}</div>` : '';
+            const citesHTML = cites && cites.length ? `<div class="citations">${cites.map(c => `<span class="cite">${c}</span>`).join('')}</div>` : '';
+            const ttsBtn = `<button style="background:var(--gold-dim); border:1px solid rgba(212,169,42,0.2); color:var(--white); cursor:pointer; font-size:0.7rem; margin-top:10px; padding:6px 12px; border-radius:12px;" onclick="playTTS(this)">Listen</button>`;
+            row.innerHTML = `<div>${labelHTML}<div class="bubble">${html}${citesHTML}<div style="margin-top:12px; border-top:1px solid rgba(212,169,42,0.1); padding-top:10px">${ttsBtn}</div></div></div>`;
+            row.dataset.rawText = rawText;
+            chatArea.appendChild(row);
+            scroll();
+            if (save && currentUser) saveToHistory({ role: 'ai', label, html, cites, rawText });
+        }
+
+        async function reply(text) {
+            busy = true;
+            showTyping();
+            try {
+                // Get history from localStorage to pass context
+                let history = [];
+                if (currentUser) {
+                    const raw = localStorage.getItem('nyaybot_history_' + currentUser.id);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        history = parsed.map(m => ({ 
+                            role: m.role === 'user' ? 'user' : 'model', 
+                            text: m.rawText || m.content || "" 
+                        }));
+                    }
+                }
+
+                const res = await fetch(BACKEND_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        message: text,
+                        history: history,
+                        language: LANGS[currentLang].name
+                    })
+                });
+                const data = await res.json();
+                
+                if (!res.ok) {
+                    throw new Error(data.error || 'Failed to get response');
+                }
+                
+                hideTyping();
+
+                let responseText = data.reply || data.response || '';
+                let cites = data.citations || [];
+                let category = data.category || null;
+
+                if (isAutoMode) {
+                    document.querySelectorAll('.topic-item').forEach(el => el.classList.remove('active'));
+                    const matchedTopic = category ? TOPICS.find(t => t.id === category) : null;
+                    if (matchedTopic) {
+                        const topicEl = $('topic-' + category);
+                        if (topicEl) topicEl.classList.add('active');
+                        $('active-topic-name').textContent = matchedTopic.en + ' Assistant';
+                    }
+                }
+
+                if (currentLang !== 'en-IN' && SARVAM_KEY) {
+                    responseText = await sarvamTranslate(responseText, currentLang);
+                }
+
+                addAIMsg('Legal Guidance', responseText.replace(/\n/g, '<br>'), cites, responseText);
+            } catch (err) {
+                hideTyping();
+                addAIMsg('Error', err.message || 'I am having trouble connecting to my legal brain.');
+            }
+            busy = false;
+        }
+
+        function showTyping() {
+            const t = document.createElement('div');
+            t.id = 'typing';
+            t.style.padding = '10px 20px';
+            t.style.color = 'var(--gold)';
+            t.style.fontSize = '0.8rem';
+            t.textContent = 'NyayBot is thinking...';
+            chatArea.appendChild(t);
+            scroll();
+        }
+        function hideTyping() { const t = $('typing'); if (t) t.remove(); }
+        function scroll() { chatArea.scrollTop = chatArea.scrollHeight; }
+
+        /* ══ SARVAM AI ══ */
+        async function sarvamTranslate(text, targetLang) {
+            const res = await fetch('https://api.sarvam.ai/translate', {
+                method: 'POST', headers: { 'api-subscription-key': SARVAM_KEY, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ input: text, source_language_code: 'en-IN', target_language_code: targetLang, model: 'mayura:v1' })
+            });
+            const d = await res.json(); return d.translated_text || text;
+        }
+
+        async function sarvamTTS(text, lang) {
+            const res = await fetch('https://api.sarvam.ai/text-to-speech', {
+                method: 'POST', headers: { 'api-subscription-key': SARVAM_KEY, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inputs: [text.substring(0, 500)], target_language_code: lang, speaker: 'ritu', model: 'bulbul:v3' })
+            });
+            const d = await res.json();
+            if (d.audios && d.audios[0]) {
+                const bString = window.atob(d.audios[0]);
+                const bytes = new Uint8Array(bString.length);
+                for (let i = 0; i < bString.length; i++) bytes[i] = bString.charCodeAt(i);
+                return new Audio(URL.createObjectURL(new Blob([bytes], { type: 'audio/wav' })));
+            }
+            return null;
+        }
+
+        window.playTTS = async function (btn) {
+            const raw = btn.closest('.msg-row').dataset.rawText;
+            btn.textContent = '⏳ ...';
+            const audio = await sarvamTTS(raw, currentLang);
+            if (audio) { audio.play(); btn.textContent = '🔊 Playing'; audio.onended = () => btn.textContent = '🔊 Listen'; }
+            else btn.textContent = '🔊 Listen';
+        };
+
+        /* ══ VOICE TOGGLE ══ */
+        fab.onclick = (e) => {
+            e.preventDefault();
+            if (isRecording) stopVoice(); else startVoice();
+        };
+
+        async function startVoice() {
+            if (isRecording) return; // Guard
+            isRecording = true;
+            fab.innerHTML = stopSVG; // Switch icon
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                mediaRecorder.onstop = processVoice;
+                mediaRecorder.start();
+                fab.classList.add('recording');
+                overlay.classList.add('show');
+                $('rec-status').textContent = 'LISTENING...';
+                overlay.onclick = stopVoice; // Tap overlay to stop too
+            } catch (e) {
+                isRecording = false;
+                fab.innerHTML = micSVG; // Reset icon
+                alert("Mic error: " + e.message);
+            }
+        }
+
+        function stopVoice() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+            isRecording = false;
+            fab.classList.remove('recording');
+            fab.innerHTML = micSVG; // Reset icon
+            // We keep overlay.show until processVoice clears it
+        }
+
+        async function processVoice() {
+            const status = $('rec-status');
+            if (status) status.textContent = 'PROCESSING...';
+            const blob = new Blob(audioChunks, { type: 'audio/webm' });
+            const fd = new FormData();
+            fd.append('file', blob, 'rec.webm');
+            fd.append('language_code', currentLang);
+            fd.append('model', 'saaras:v3');
+            try {
+                const res = await fetch('https://api.sarvam.ai/speech-to-text', {
+                    method: 'POST',
+                    headers: { 'api-subscription-key': SARVAM_KEY },
+                    body: fd
+                });
+                const d = await res.json();
+                if (d.transcript) { userInput.value = d.transcript; send(); }
+            } catch (e) { console.error(e); }
+            overlay.classList.remove('show');
+        }
+
+        function send() {
+            const text = userInput.value.trim();
+            if (!text || busy) return;
+            addUserMsg(text);
+            reply(text);
+            userInput.value = '';
+        }
+        sendBtn.onclick = send;
+        userInput.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } };
+
+        function exitChat() {
+            document.body.classList.remove('chat-active');
+            chatView.classList.remove('show');
+            document.body.classList.add('scrolled');
+        }
+
+        function signOut() {
+            if (!confirm('Securely exit Legal Vault and clear current session?')) return;
+            currentUser = null;
+            exitChat();
+        }
+
+        function saveToHistory(msg) {
+            const key = `nyaybot_history_${currentUser}`;
+            let h = JSON.parse(localStorage.getItem(key) || '[]');
+            h.push(msg);
+            localStorage.setItem(key, JSON.stringify(h));
+        }
+
+        function loadChatHistory() {
+            const key = `nyaybot_history_${currentUser}`;
+            const h = JSON.parse(localStorage.getItem(key) || '[]');
+            chatArea.innerHTML = '';
+            h.forEach(m => {
+                if (m.role === 'user') addUserMsg(m.content, false);
+                else addAIMsg(m.label, m.html, m.cites, m.rawText, false);
+            });
+        }
+
+        $('lang-switch').onclick = exitChat;
+
+        // ══ 3D LOGO IMAGE SEQUENCER (USING TRANSPARENT FRAMES) ══
+        const logoCanvas = $('logo-sequencer');
+        const logoCtx = logoCanvas.getContext('2d');
+        const startFrame = 65; // Skip the first 64 frames for a cleaner start
+        const frameCount = 192;
+        const frames = [];
+        let currentFrame = 0;
+
+        function preloadLogoFrames() {
+            for (let i = startFrame; i <= frameCount; i++) {
+                const img = new Image();
+                img.src = `images/${String(i).padStart(5, '0')}.png`;
+                // Pre-warm the decoder: drawing even an off-screen image once 
+                // forces the browser to decode it before the loop starts.
+                img.onload = () => {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = 1; tempCanvas.height = 1;
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCtx.drawImage(img, 0, 0, 1, 1);
+                };
+                frames.push(img);
+            }
+        }
+
+        function renderLogoFrame() {
+            if (frames[currentFrame] && frames[currentFrame].complete) {
+                const img = frames[currentFrame];
+                logoCanvas.width = img.width;
+                logoCanvas.height = img.height;
+                logoCtx.clearRect(0, 0, logoCanvas.width, logoCanvas.height);
+                logoCtx.drawImage(img, 0, 0);
+            }
+
+            if (currentFrame < frames.length - 1) {
+                currentFrame++;
+                requestAnimationFrame(renderLogoFrame);
+            }
+        }
+
+        preloadLogoFrames();
+        // Slightly longer delay to ensure main-thread settles after flash effect
+        setTimeout(renderLogoFrame, 3500);
+
+        // ══ COLUMBIA PICTURES STARFIELD LOGIC ══
+        function initStars() {
+            const container = $('stars');
+            for (let i = 0; i < 80; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                const size = Math.random() * 2 + 1;
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+
+                // Start from center
+                s.style.left = '50vw';
+                s.style.top = '50vh';
+
+                // Explode outwards radially
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100; // travel distance factor
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+
+                s.animate([
+                    { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 },
+                    { opacity: Math.random() * 0.5 + 0.3, offset: 0.2 },
+                    { transform: `translate(calc(-50% + ${tx}vw), calc(-50% + ${ty}vh)) scale(${Math.random() * 3 + 1})`, opacity: 0 }
+                ], {
+                    duration: (Math.random() * 4000 + 3000),
+                    delay: Math.random() * -8000,
+                    iterations: Infinity,
+                    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                });
+
+                s.style.background = Math.random() > 0.85 ? 'var(--gold)' : 'rgba(255,255,255,0.7)';
+                container.appendChild(s);
+            }
+        }
+        initStars();
+
+        // Scroll detection to transition stages
+        function doScrollAction() {
+            if (!document.body.classList.contains('chat-active')) {
+                document.body.classList.add('scrolled');
+            }
+        }
+
+        window.addEventListener('wheel', e => {
+            if (e.deltaY > 0) doScrollAction();
+        });
+
+        let touchStart = 0;
+        window.addEventListener('touchstart', e => touchStart = e.touches[0].clientY);
+        window.addEventListener('touchmove', e => {
+            if (touchStart - e.touches[0].clientY > 40) doScrollAction(); // swiped up
+        });
+
+        let isLogin = true;
+        function switchAuthMode() {
+            isLogin = !isLogin;
+            $('auth-title').textContent = isLogin ? 'Legal Vault' : 'New Defender';
+            $('auth-desc').textContent = isLogin ? 'Access your saved cases and documents' : 'Create a secure vault for your legal queries';
+            $('auth-submit-btn').textContent = isLogin ? 'Authorize Access' : 'Create Account';
+            $('auth-toggle-text').textContent = isLogin ? 'New defender?' : 'Already have a key?';
+            $('auth-toggle-link').textContent = isLogin ? 'Register Account' : 'Sign In Now';
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const user = $('auth-user').value.trim();
+            const pass = $('auth-pass').value.trim();
+
+            if (isLogin) {
+                // Login Logic
+                const storedPass = localStorage.getItem(`nyaybot_user_${user}`);
+                if (storedPass === pass) {
+                    currentUser = user; // Fixed: Track current session user
+                    alert('Identity Verified. Welcome back, Counselor.');
+                    toggleAuth(false);
+                    enterChatDirectly(); // Enhanced to load history
+                } else {
+                    alert('Access Denied: Invalid Identifier or Key.');
+                }
+            } else {
+                // Register Logic
+                if (localStorage.getItem(`nyaybot_user_${user}`)) {
+                    alert('Identifier already registered in the Vault.');
+                } else {
+                    localStorage.setItem(`nyaybot_user_${user}`, pass);
+                    alert('Account Registered Successfully. Your data is now secure.');
+                    switchAuthMode(); // Flip back to login
+                }
+            }
+        }
+
+        function toggleAuth(show) {
+            const stage = $('auth-stage');
+            if (show) {
+                stage.classList.add('active');
+            } else {
+                stage.classList.remove('active');
+            }
+        }
+
+    </script>
+</body>
+
+</html>

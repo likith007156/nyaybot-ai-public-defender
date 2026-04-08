@@ -1,0 +1,142 @@
+[
+    {
+        "category": "Criminal Law",
+        "sub_case": "FIR not filed",
+        "keywords": [
+            "fir"
+        ]
+    },
+    {
+        "category": "Criminal Law",
+        "sub_case": "Theft",
+        "keywords": [
+            "stolen"
+        ]
+    },
+    {
+        "category": "Criminal Law",
+        "sub_case": "Assault",
+        "keywords": [
+            "attack"
+        ]
+    },
+    {
+        "category": "Criminal Law",
+        "sub_case": "Threats",
+        "keywords": [
+            "threat"
+        ]
+    },
+    {
+        "category": "Criminal Law",
+        "sub_case": "Fraud",
+        "keywords": [
+            "fraud"
+        ]
+    },
+    {
+        "category": "Property & Rent",
+        "sub_case": "Eviction",
+        "keywords": [
+            "eviction"
+        ]
+    },
+    {
+        "category": "Property & Rent",
+        "sub_case": "Deposit issue",
+        "keywords": [
+            "deposit"
+        ]
+    },
+    {
+        "category": "Property & Rent",
+        "sub_case": "Rent dispute",
+        "keywords": [
+            "rent"
+        ]
+    },
+    {
+        "category": "Property & Rent",
+        "sub_case": "Encroachment",
+        "keywords": [
+            "encroach"
+        ]
+    },
+    {
+        "category": "Property & Rent",
+        "sub_case": "Boundary dispute",
+        "keywords": [
+            "boundary"
+        ]
+    },
+    {
+        "category": "Family Law",
+        "sub_case": "Domestic violence",
+        "keywords": [
+            "violence"
+        ]
+    },
+    {
+        "category": "Family Law",
+        "sub_case": "Divorce",
+        "keywords": [
+            "divorce"
+        ]
+    },
+    {
+        "category": "Family Law",
+        "sub_case": "Child custody",
+        "keywords": [
+            "child"
+        ]
+    },
+    {
+        "category": "Family Law",
+        "sub_case": "Maintenance",
+        "keywords": [
+            "maintenance"
+        ]
+    },
+    {
+        "category": "Family Law",
+        "sub_case": "Dowry harassment",
+        "keywords": [
+            "dowry"
+        ]
+    },
+    {
+        "category": "Employment Law",
+        "sub_case": "Salary unpaid",
+        "keywords": [
+            "salary"
+        ]
+    },
+    {
+        "category": "Employment Law",
+        "sub_case": "Termination",
+        "keywords": [
+            "fired"
+        ]
+    },
+    {
+        "category": "Employment Law",
+        "sub_case": "Workplace harassment",
+        "keywords": [
+            "harassment"
+        ]
+    },
+    {
+        "category": "Employment Law",
+        "sub_case": "Bond issue",
+        "keywords": [
+            "bond"
+        ]
+    },
+    {
+        "category": "Employment Law",
+        "sub_case": "Overtime unpaid",
+        "keywords": [
+            "overtime"
+        ]
+    }
+]

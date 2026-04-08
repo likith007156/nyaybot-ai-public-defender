@@ -1,0 +1,635 @@
+{
+    "FIR not filed": {
+        "act": "CrPC",
+        "sections": [
+            "154"
+        ],
+        "keywords": [
+            "fir",
+            "police"
+        ]
+    },
+    "Theft": {
+        "act": "IPC",
+        "sections": [
+            "378"
+        ],
+        "keywords": [
+            "theft",
+            "stolen"
+        ]
+    },
+    "Assault": {
+        "act": "IPC",
+        "sections": [
+            "351"
+        ],
+        "keywords": [
+            "attack"
+        ]
+    },
+    "Threats": {
+        "act": "IPC",
+        "sections": [
+            "503"
+        ],
+        "keywords": [
+            "threat"
+        ]
+    },
+    "Police harassment": {
+        "act": "IPC",
+        "sections": [
+            "166"
+        ],
+        "keywords": [
+            "police"
+        ]
+    },
+    "Cyber fraud": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "fraud",
+            "online"
+        ]
+    },
+    "Mobile theft": {
+        "act": "IPC",
+        "sections": [
+            "379"
+        ],
+        "keywords": [
+            "mobile"
+        ]
+    },
+    "Chain snatching": {
+        "act": "IPC",
+        "sections": [
+            "356"
+        ],
+        "keywords": [
+            "chain"
+        ]
+    },
+    "Kidnapping": {
+        "act": "IPC",
+        "sections": [
+            "363"
+        ],
+        "keywords": [
+            "kidnap"
+        ]
+    },
+    "Fraud": {
+        "act": "IPC",
+        "sections": [
+            "420"
+        ],
+        "keywords": [
+            "fraud"
+        ]
+    },
+    "Eviction": {
+        "act": "Rent Control Act",
+        "sections": [
+            "State"
+        ],
+        "keywords": [
+            "eviction"
+        ]
+    },
+    "Deposit issue": {
+        "act": "Rent Control Act",
+        "sections": [
+            "Tenant"
+        ],
+        "keywords": [
+            "deposit"
+        ]
+    },
+    "Landlord harassment": {
+        "act": "Rent Law",
+        "sections": [
+            "Protection"
+        ],
+        "keywords": [
+            "landlord"
+        ]
+    },
+    "Illegal possession": {
+        "act": "IPC",
+        "sections": [
+            "441"
+        ],
+        "keywords": [
+            "possession"
+        ]
+    },
+    "Rent dispute": {
+        "act": "Contract Act",
+        "sections": [
+            "10"
+        ],
+        "keywords": [
+            "rent"
+        ]
+    },
+    "Water supply issue": {
+        "act": "Municipal Law",
+        "sections": [
+            "Local"
+        ],
+        "keywords": [
+            "water"
+        ]
+    },
+    "Electricity issue": {
+        "act": "Electricity Act",
+        "sections": [
+            "43"
+        ],
+        "keywords": [
+            "electricity"
+        ]
+    },
+    "Property damage": {
+        "act": "IPC",
+        "sections": [
+            "427"
+        ],
+        "keywords": [
+            "damage"
+        ]
+    },
+    "Boundary dispute": {
+        "act": "Civil Law",
+        "sections": [
+            "Land"
+        ],
+        "keywords": [
+            "boundary"
+        ]
+    },
+    "Encroachment": {
+        "act": "Land Law",
+        "sections": [
+            "Encroach"
+        ],
+        "keywords": [
+            "encroach"
+        ]
+    },
+    "Domestic violence": {
+        "act": "DV Act",
+        "sections": [
+            "12"
+        ],
+        "keywords": [
+            "violence"
+        ]
+    },
+    "Divorce": {
+        "act": "Hindu Marriage Act",
+        "sections": [
+            "13"
+        ],
+        "keywords": [
+            "divorce"
+        ]
+    },
+    "Child custody": {
+        "act": "Guardian Act",
+        "sections": [
+            "7"
+        ],
+        "keywords": [
+            "child"
+        ]
+    },
+    "Maintenance": {
+        "act": "CrPC",
+        "sections": [
+            "125"
+        ],
+        "keywords": [
+            "maintenance"
+        ]
+    },
+    "Dowry harassment": {
+        "act": "IPC",
+        "sections": [
+            "498A"
+        ],
+        "keywords": [
+            "dowry"
+        ]
+    },
+    "Second marriage": {
+        "act": "IPC",
+        "sections": [
+            "494"
+        ],
+        "keywords": [
+            "marriage"
+        ]
+    },
+    "Alimony dispute": {
+        "act": "Family Law",
+        "sections": [
+            "Alimony"
+        ],
+        "keywords": [
+            "alimony"
+        ]
+    },
+    "Child abuse": {
+        "act": "POCSO",
+        "sections": [
+            "7"
+        ],
+        "keywords": [
+            "child abuse"
+        ]
+    },
+    "Parental dispute": {
+        "act": "Family Law",
+        "sections": [
+            "Custody"
+        ],
+        "keywords": [
+            "parents"
+        ]
+    },
+    "Forced marriage": {
+        "act": "IPC",
+        "sections": [
+            "366"
+        ],
+        "keywords": [
+            "forced"
+        ]
+    },
+    "Salary unpaid": {
+        "act": "Wages Act",
+        "sections": [
+            "5"
+        ],
+        "keywords": [
+            "salary"
+        ]
+    },
+    "Termination": {
+        "act": "Labour Law",
+        "sections": [
+            "25F"
+        ],
+        "keywords": [
+            "fired"
+        ]
+    },
+    "Workplace harassment": {
+        "act": "POSH",
+        "sections": [
+            "9"
+        ],
+        "keywords": [
+            "harassment"
+        ]
+    },
+    "Bond issue": {
+        "act": "Contract Act",
+        "sections": [
+            "27"
+        ],
+        "keywords": [
+            "bond"
+        ]
+    },
+    "Overtime unpaid": {
+        "act": "Factories Act",
+        "sections": [
+            "59"
+        ],
+        "keywords": [
+            "overtime"
+        ]
+    },
+    "Job fraud": {
+        "act": "IPC",
+        "sections": [
+            "420"
+        ],
+        "keywords": [
+            "job"
+        ]
+    },
+    "Offer letter issue": {
+        "act": "Contract",
+        "sections": [
+            "Agreement"
+        ],
+        "keywords": [
+            "offer"
+        ]
+    },
+    "PF issue": {
+        "act": "EPF Act",
+        "sections": [
+            "PF"
+        ],
+        "keywords": [
+            "pf"
+        ]
+    },
+    "ESI issue": {
+        "act": "ESI Act",
+        "sections": [
+            "ESI"
+        ],
+        "keywords": [
+            "esi"
+        ]
+    },
+    "Resignation issue": {
+        "act": "Labour Law",
+        "sections": [
+            "Resign"
+        ],
+        "keywords": [
+            "resign"
+        ]
+    },
+    "Defective product": {
+        "act": "Consumer Act",
+        "sections": [
+            "2"
+        ],
+        "keywords": [
+            "product"
+        ]
+    },
+    "No refund": {
+        "act": "Consumer Act",
+        "sections": [
+            "35"
+        ],
+        "keywords": [
+            "refund"
+        ]
+    },
+    "Service issue": {
+        "act": "Consumer Act",
+        "sections": [
+            "2(11)"
+        ],
+        "keywords": [
+            "service"
+        ]
+    },
+    "Online scam": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "scam"
+        ]
+    },
+    "Fake ad": {
+        "act": "Consumer Act",
+        "sections": [
+            "2(28)"
+        ],
+        "keywords": [
+            "ad"
+        ]
+    },
+    "Delivery delay": {
+        "act": "Consumer Act",
+        "sections": [
+            "Delay"
+        ],
+        "keywords": [
+            "delivery"
+        ]
+    },
+    "Wrong product": {
+        "act": "Consumer Act",
+        "sections": [
+            "Defect"
+        ],
+        "keywords": [
+            "wrong"
+        ]
+    },
+    "Warranty issue": {
+        "act": "Consumer Act",
+        "sections": [
+            "Warranty"
+        ],
+        "keywords": [
+            "warranty"
+        ]
+    },
+    "Food safety": {
+        "act": "FSSAI",
+        "sections": [
+            "Food"
+        ],
+        "keywords": [
+            "food"
+        ]
+    },
+    "Ecommerce fraud": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "ecommerce"
+        ]
+    },
+    "Loan harassment": {
+        "act": "RBI",
+        "sections": [
+            "Recovery"
+        ],
+        "keywords": [
+            "loan"
+        ]
+    },
+    "Debt issue": {
+        "act": "Civil",
+        "sections": [
+            "Debt"
+        ],
+        "keywords": [
+            "debt"
+        ]
+    },
+    "Bank fraud": {
+        "act": "IPC",
+        "sections": [
+            "420"
+        ],
+        "keywords": [
+            "bank"
+        ]
+    },
+    "Credit card": {
+        "act": "Banking",
+        "sections": [
+            "Card"
+        ],
+        "keywords": [
+            "credit"
+        ]
+    },
+    "Recovery threat": {
+        "act": "IPC",
+        "sections": [
+            "503"
+        ],
+        "keywords": [
+            "recovery"
+        ]
+    },
+    "ATM fraud": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "atm"
+        ]
+    },
+    "UPI fraud": {
+        "act": "IT Act",
+        "sections": [
+            "66D"
+        ],
+        "keywords": [
+            "upi"
+        ]
+    },
+    "Cheque bounce": {
+        "act": "NI Act",
+        "sections": [
+            "138"
+        ],
+        "keywords": [
+            "cheque"
+        ]
+    },
+    "Insurance fraud": {
+        "act": "Insurance",
+        "sections": [
+            "Fraud"
+        ],
+        "keywords": [
+            "insurance"
+        ]
+    },
+    "Loan default": {
+        "act": "Banking",
+        "sections": [
+            "Default"
+        ],
+        "keywords": [
+            "default"
+        ]
+    },
+    "Online harassment": {
+        "act": "IT Act",
+        "sections": [
+            "66A"
+        ],
+        "keywords": [
+            "online"
+        ]
+    },
+    "Hacking": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "hack"
+        ]
+    },
+    "Identity theft": {
+        "act": "IT Act",
+        "sections": [
+            "66C"
+        ],
+        "keywords": [
+            "identity"
+        ]
+    },
+    "Fake account": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "fake"
+        ]
+    },
+    "Cyber stalking": {
+        "act": "IPC",
+        "sections": [
+            "354D"
+        ],
+        "keywords": [
+            "stalking"
+        ]
+    },
+    "Email fraud": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "email"
+        ]
+    },
+    "OTP fraud": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "otp"
+        ]
+    },
+    "Data breach": {
+        "act": "IT Act",
+        "sections": [
+            "43"
+        ],
+        "keywords": [
+            "data"
+        ]
+    },
+    "Social media abuse": {
+        "act": "IPC",
+        "sections": [
+            "499"
+        ],
+        "keywords": [
+            "social"
+        ]
+    },
+    "Phishing": {
+        "act": "IT Act",
+        "sections": [
+            "66"
+        ],
+        "keywords": [
+            "phishing"
+        ]
+    }
+}

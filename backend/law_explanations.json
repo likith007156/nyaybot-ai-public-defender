@@ -1,0 +1,122 @@
+{
+    "Section 154 CrPC": {
+        "act": "CrPC",
+        "explanation": "Section 154 of CrPC deals with FIR registration. Police must record information about cognizable offences. The complaint can be oral or written. Police cannot refuse to register FIR if a valid offence is disclosed. It ensures quick legal action."
+    },
+    "Section 378 IPC": {
+        "act": "IPC",
+        "explanation": "Section 378 IPC defines theft. It involves taking someone's movable property without consent. The act must be dishonest. It protects ownership rights. Punishment is given under Section 379."
+    },
+    "Section 351 IPC": {
+        "act": "IPC",
+        "explanation": "Section 351 IPC defines assault. It includes threatening or attempting to apply force. Physical contact is not always required. It protects individuals from harm and intimidation."
+    },
+    "Section 503 IPC": {
+        "act": "IPC",
+        "explanation": "Section 503 IPC deals with criminal intimidation. It involves threatening someone with injury or harm. It protects people from fear and coercion. Punishment is covered under Section 506."
+    },
+    "Section 166 IPC": {
+        "act": "IPC",
+        "explanation": "Section 166 IPC applies when a public servant disobeys the law knowingly. It is often used in cases of police misconduct. It ensures accountability of government officials."
+    },
+    "Section 420 IPC": {
+        "act": "IPC",
+        "explanation": "Section 420 IPC deals with cheating and fraud. It applies when someone deceives another for financial gain. It is widely used in scam cases. Punishment includes imprisonment and fine."
+    },
+    "Section 379 IPC": {
+        "act": "IPC",
+        "explanation": "Section 379 IPC provides punishment for theft. It includes imprisonment or fine. It ensures protection of personal property rights."
+    },
+    "Section 356 IPC": {
+        "act": "IPC",
+        "explanation": "Section 356 IPC deals with assault or criminal force in attempt to commit theft. It is commonly used in chain snatching cases. It ensures protection from sudden attacks."
+    },
+    "Section 363 IPC": {
+        "act": "IPC",
+        "explanation": "Section 363 IPC deals with kidnapping. It applies when a person is taken away unlawfully. It protects personal liberty and safety."
+    },
+    "Section 441 IPC": {
+        "act": "IPC",
+        "explanation": "Section 441 IPC defines criminal trespass. It involves entering someone’s property unlawfully. It protects property rights."
+    },
+    "Section 427 IPC": {
+        "act": "IPC",
+        "explanation": "Section 427 IPC deals with property damage. It applies when someone causes loss or damage intentionally. It protects property from destruction."
+    },
+    "Section 498A IPC": {
+        "act": "IPC",
+        "explanation": "Section 498A IPC deals with cruelty against a married woman. It includes physical and mental harassment. It is commonly used in domestic violence and dowry cases."
+    },
+    "Section 494 IPC": {
+        "act": "IPC",
+        "explanation": "Section 494 IPC deals with bigamy. It applies when a person marries again while the first marriage is still valid. It protects marital rights."
+    },
+    "Section 354D IPC": {
+        "act": "IPC",
+        "explanation": "Section 354D IPC deals with stalking. It includes repeatedly following or contacting a person. It protects personal safety and privacy."
+    },
+    "Section 66 IT Act": {
+        "act": "IT Act",
+        "explanation": "Section 66 IT Act deals with computer-related offences like hacking. It applies when actions are dishonest or fraudulent. It protects digital systems."
+    },
+    "Section 66C IT Act": {
+        "act": "IT Act",
+        "explanation": "Section 66C deals with identity theft. It includes misuse of personal data like passwords or identity information. It protects digital identity."
+    },
+    "Section 66D IT Act": {
+        "act": "IT Act",
+        "explanation": "Section 66D deals with online fraud and cheating. It includes phishing and impersonation scams. It protects users from cyber fraud."
+    },
+    "Section 43 IT Act": {
+        "act": "IT Act",
+        "explanation": "Section 43 deals with unauthorized access or damage to computer systems. It includes data theft and system damage. It protects digital infrastructure."
+    },
+    "Rent Control Act": {
+        "act": "Rent Law",
+        "explanation": "Rent Control Acts regulate landlord-tenant relationships. They protect tenants from unfair eviction. They also define rights related to rent and deposits."
+    },
+    "Contract Act": {
+        "act": "Indian Contract Act",
+        "explanation": "The Contract Act governs agreements between parties. It defines valid contracts and obligations. It ensures fairness in agreements."
+    },
+    "Electricity Act": {
+        "act": "Electricity Act",
+        "explanation": "This Act regulates electricity supply and distribution. It ensures fair access to electricity. It protects consumer rights in electricity services."
+    },
+    "Domestic Violence Act": {
+        "act": "DV Act",
+        "explanation": "This Act protects women from domestic abuse. It includes physical, emotional, and financial abuse. It provides legal protection and support."
+    },
+    "Hindu Marriage Act": {
+        "act": "Family Law",
+        "explanation": "This Act governs marriage and divorce among Hindus. It includes provisions for separation and divorce. It ensures legal structure in marriage."
+    },
+    "Guardian Act": {
+        "act": "Guardian and Wards Act",
+        "explanation": "This Act deals with child custody and guardianship. Courts decide based on the child’s welfare. It ensures protection of minors."
+    },
+    "POSH": {
+        "act": "POSH Act",
+        "explanation": "POSH Act protects women from workplace harassment. It requires companies to have complaint committees. It ensures safe working environments."
+    },
+    "Wages Act": {
+        "act": "Payment of Wages Act",
+        "explanation": "This Act ensures timely payment of wages to employees. It prevents illegal deductions. It protects workers' financial rights."
+    },
+    "Factories Act": {
+        "act": "Factories Act",
+        "explanation": "This Act regulates working conditions in factories. It ensures safety and proper working hours. It protects workers’ health."
+    },
+    "Consumer Act": {
+        "act": "Consumer Protection Act",
+        "explanation": "This Act protects consumers from defective goods and poor services. It allows filing complaints. It ensures fair trade practices."
+    },
+    "RBI": {
+        "act": "RBI Guidelines",
+        "explanation": "RBI guidelines regulate banking practices. They protect customers from unfair recovery methods. They ensure fair financial operations."
+    },
+    "NI Act": {
+        "act": "Negotiable Instruments Act",
+        "explanation": "This Act deals with financial instruments like cheques. It includes cheque bounce cases under Section 138. It ensures financial accountability."
+    }
+}
